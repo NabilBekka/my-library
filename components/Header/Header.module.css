@@ -1,0 +1,67 @@
+.header {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    height: var(--headerHight);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+.title {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+.title:hover{
+    cursor: pointer;
+}
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 350px;
+}
+.register, .login {
+    border: solid 2px var(--textHoverColor);
+    border-radius: 3px;
+    color: var(--backgroundColor);
+    background-color: var(--textHoverColor);
+    height: 40px;
+    width: 150px;
+    margin-right: 5px;
+}
+.login:hover, .login:focus, .register:hover, .register:focus {
+    cursor: pointer;
+    background-color: var(--backgroundColor);
+    color: var(--textHoverColor);
+}
+/* .parameters {
+    position: absolute;
+    top: 50px;
+    
+} */
+.parameters:hover, .parameters:focus {
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+@media (max-width: 720px){
+    .header {
+        justify-content: center;
+    }
+    .connexion {
+        display: none;
+    }
+    .container{
+        width: 0;
+    }
+    .parameters {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+}
