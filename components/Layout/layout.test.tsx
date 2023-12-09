@@ -1,7 +1,6 @@
 import '@testing-library/jest-dom';
-// import { expect, it } from '@jest/globals';
-import { render } from '../../lib/redux/reduxRender';
-import Layout from "./";
+import { render } from '../../lib/redux/reduxRender.test';
+import Layout from ".";
 
 describe('Testing the Layout component', () => {
     it('should renders the header', () => {

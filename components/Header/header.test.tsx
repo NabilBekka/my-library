@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom';
-// import { expect, it } from '@jest/globals';
-import { fireEvent, render } from '../../lib/redux/reduxRender';
+import { fireEvent, render } from '../../lib/redux/reduxRender.test';
 import Header from '.';
 import mockRouter from 'next-router-mock';
 

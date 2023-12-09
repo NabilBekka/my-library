@@ -1,6 +1,5 @@
 import '@testing-library/jest-dom';
-// import { expect, it } from '@jest/globals';
-import { render } from '../../lib/redux/reduxRender';
+import { render } from '../../lib/redux/reduxRender.test';
 import Connexion from '.';
 
 describe('Testing the Connexion component', () => {

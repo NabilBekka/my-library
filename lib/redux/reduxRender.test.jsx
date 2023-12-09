@@ -14,6 +14,10 @@ const customRender = (ui, options) => {
     return render(ui, { wrapper: Wrapper, ...options });
 };
 
+test("1 to be equal 1", () => {
+    expect(1).toBe(1);
+})
+
 export * from '@testing-library/react';
 
 export { customRender as render };
