@@ -12,6 +12,7 @@ export default function Connexion() {
   const [dispalyForgotPasswordForm, setDispalyForgotPasswordForm] = useState(false);
 
   const dispalyModalHandler = (display:boolean):void => {
+    console.log("display modal")
     setDispalyModal(display);
     if(!display){
       setDispalyLoginForm(false);

@@ -15,7 +15,7 @@ describe('Test the Modal component', () => {
         const exitLogo = getByAltText('Fermer');
         expect(exitLogo).toBeInTheDocument();
     });
-    it('should call the display function', () => {
+    it('should call the display function after clicking on the exitLogo', () => {
         const { getByAltText } = render(<Modal display={display}/>);
         const exitLogo = getByAltText('Fermer');
         fireEvent.click(exitLogo);

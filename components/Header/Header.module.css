@@ -39,11 +39,6 @@
     background-color: var(--backgroundColor);
     color: var(--textHoverColor);
 }
-/* .parameters {
-    position: absolute;
-    top: 50px;
-    
-} */
 .parameters:hover, .parameters:focus {
     cursor: pointer;
     transform: scale(1.1);

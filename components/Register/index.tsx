@@ -1,19 +1,25 @@
+import styles from "../Connexion/Connexion.module.css";
+
 type Props = {
   displayLoginForm: (display:boolean) => void;
   displayRegisterForm: (display:boolean) => void;
 }
 export default function Register({displayLoginForm, displayRegisterForm}:Props) {
-  return (
-    <form data-testid='register'>
-      <input type="text" placeholder="PSEUDO"/>
-      <input type="email" placeholder="EMAIL"/>
-      <input type="password" placeholder="MOT DE PASSE"/>
-      <input type="password" placeholder="CONFIRMER LE MOT DE PASSE"/>
-      <p onClick={()=>{
-        displayLoginForm(true);
-        displayRegisterForm(false);
-        }}>Déja inscrit?</p>
-      <button>S&apos;INSCRIRE</button>
+  return (<>
+    <h3 className={styles.title}>INSCRIPTION</h3>
+    <form data-testid='register' className={styles.form}>
+      <input type="text" placeholder="PSEUDO" className={styles.input} required/>
+      <input type="email" placeholder="EMAIL" className={styles.input} required/>
+      <input type="password" placeholder="MOT DE PASSE" className={styles.input} required/>
+      <input type="password" placeholder="CONFIRMER LE MOT DE PASSE" className={styles.input} required/>
+      <div className={styles.btnLinkContainer}>
+        <p onClick={()=>{
+          displayLoginForm(true);
+          displayRegisterForm(false);
+          }} className={styles.link}>Déja inscrit?</p>
+        <button className={styles.button}>S&apos;INSCRIRE</button>
+      </div>
+      
     </form>
-  )
+  </>)
 }
