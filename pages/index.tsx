@@ -1,6 +1,7 @@
 import Head from 'next/head';
 import styles from '@/styles/Home.module.css';
 import { useAppSelector } from '@/lib/redux/hooks';
+import Modal from '@/components/Modal';
 
 export default function Home() {
   const mode = useAppSelector(state => state.mode.darkMode);
@@ -14,6 +15,7 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
           hello
+          {/* <Modal /> */}
       </main>
     </>
   )

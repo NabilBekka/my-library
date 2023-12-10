@@ -1,0 +1,15 @@
+.container {
+    position: absolute;
+    backdrop-filter: blur(2px);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 50px;
+}
+.mainDiv {
+    background-color: var(--backgroundColor);
+    opacity: 1;
+    min-width: 250px;
+    min-height: 300px;
+}
