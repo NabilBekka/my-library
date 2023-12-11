@@ -1,10 +1,11 @@
+import { useAppDispatch } from "@/lib/redux/hooks";
 import styles from "../Connexion/Connexion.module.css";
+import { displayLoginAction } from "@/lib/redux/features/loginSlice";
+import { displayRegisterAction } from "@/lib/redux/features/registerSlice";
 
-type Props = {
-  displayLoginForm: (display:boolean) => void;
-  displayRegisterForm: (display:boolean) => void;
-}
-export default function Register({displayLoginForm, displayRegisterForm}:Props) {
+export default function Register() {
+  const dispatch = useAppDispatch();
+  
   return (<>
     <h3 className={styles.title}>INSCRIPTION</h3>
     <form data-testid='register' className={styles.form}>
@@ -14,8 +15,8 @@ export default function Register({displayLoginForm, displayRegisterForm}:Props) 
       <input type="password" placeholder="CONFIRMER LE MOT DE PASSE" className={styles.input} required/>
       <div className={styles.btnLinkContainer}>
         <p onClick={()=>{
-          displayLoginForm(true);
-          displayRegisterForm(false);
+          dispatch(displayLoginAction(true));
+          dispatch(displayRegisterAction(false));
           }} className={styles.link}>Déja inscrit?</p>
         <button className={styles.button}>S&apos;INSCRIRE</button>
       </div>

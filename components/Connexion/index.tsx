@@ -1,47 +1,49 @@
-import { useState } from "react";
 import styles from "../Header/Header.module.css";
 import Modal from "../Modal";
 import Login from "../Login";
 import Register from "../Register";
 import ForgotPassword from "../ForgotPassword";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { displayModalAction } from "@/lib/redux/features/modalSlice";
+import { displayLoginAction } from "@/lib/redux/features/loginSlice";
+import { displayRegisterAction } from "@/lib/redux/features/registerSlice";
+import { displayForgotPasswordAction } from "@/lib/redux/features/forgotPasswordSlice";
 
 export default function Connexion() {
-  const [dispalyModal, setDispalyModal] = useState(false);
-  const [dispalyLoginForm, setDispalyLoginForm] = useState(false);
-  const [dispalyRegisterForm, setDispalyRegisterForm] = useState(false);
-  const [dispalyForgotPasswordForm, setDispalyForgotPasswordForm] = useState(false);
+  const displayModal = useAppSelector(state => state.modal.display);
+  const displayLogin = useAppSelector(state => state.login.display);
+  const displayRegister = useAppSelector(state => state.register.display);
+  const displayForgotPassword = useAppSelector(state => state.forgotPasswprd.display);
+  const dispatch = useAppDispatch();
 
   const dispalyModalHandler = (display:boolean):void => {
-    console.log("display modal")
-    setDispalyModal(display);
+    dispatch(displayModalAction(display));
     if(!display){
-      setDispalyLoginForm(false);
-      setDispalyRegisterForm(false);
-      setDispalyForgotPasswordForm(false);
+      dispatch(displayLoginAction(false));
+      dispatch(displayRegisterAction(false));
+      dispatch(displayForgotPasswordAction(false));
     }
   }
-  const displayForgotPasswordHandler = (display:boolean):void => {
-    setDispalyForgotPasswordForm(display);
-  }
+
   return (<>
     <div data-testid="connexion" className={styles.connexion}>
       <button className={styles.login} onClick={() => {
-        dispalyModalHandler(true);
-        setDispalyLoginForm(true);
+        dispatch(displayModalAction(true));
+        dispatch(displayLoginAction(true));
       }}>CONNEXION</button>
       <button className={styles.register} onClick={() => {
-        dispalyModalHandler(true);
-        setDispalyRegisterForm(true)
+        dispatch(displayModalAction(true));
+        dispatch(displayRegisterAction(true));
       }}>INSCRIPTION</button>
     </div>
-    {dispalyModal && <>
-      { dispalyLoginForm && <Modal display={dispalyModalHandler}>
-          <Login displayForgotPasswordHandler={displayForgotPasswordHandler}  displayLoginForm={setDispalyLoginForm}/>
+    {displayModal &&  <>
+      { displayLogin && <Modal display={dispalyModalHandler}>
+          <Login />
         </Modal> }
-      { dispalyRegisterForm && <Modal display={dispalyModalHandler}>
-          <Register displayLoginForm={setDispalyLoginForm} displayRegisterForm={setDispalyRegisterForm}/>
+      { displayRegister && <Modal display={dispalyModalHandler}>
+          <Register />
         </Modal> }
-      { dispalyForgotPasswordForm && <Modal display={dispalyModalHandler}>
+      { displayForgotPassword && <Modal display={dispalyModalHandler}>
           <ForgotPassword />
         </Modal> }
     </>}

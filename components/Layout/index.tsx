@@ -1,4 +1,4 @@
-import { toggleMode } from "@/lib/redux/features/mode/modeSlice";
+import { toggleMode } from "@/lib/redux/features/modeSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { PropsWithChildren, useEffect } from "react"
 import Header from "../Header";

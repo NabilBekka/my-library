@@ -1,11 +1,11 @@
+import { useAppDispatch } from "@/lib/redux/hooks";
 import styles from "../Connexion/Connexion.module.css";
+import { displayForgotPasswordAction } from "@/lib/redux/features/forgotPasswordSlice";
+import { displayLoginAction } from "@/lib/redux/features/loginSlice";
 
-type Props = {
-  displayForgotPasswordHandler: (display: boolean) => void;
-  displayLoginForm: (diplay: boolean) => void;
-}
-
-export default function Login({displayForgotPasswordHandler, displayLoginForm}:Props) {
+export default function Login() {
+  const dispatch = useAppDispatch();
+  
   return (<>
     <h3 className={styles.title}>CONNEXION</h3>
     <form data-testid='login' className={styles.form}>
@@ -13,8 +13,8 @@ export default function Login({displayForgotPasswordHandler, displayLoginForm}:P
         <input type="password" placeholder="MOT DE PASSE" className={styles.input} required/>
         <div className={styles.btnLinkContainer}>
           <p onClick={() => {
-            displayForgotPasswordHandler(true);
-            displayLoginForm(false);
+            dispatch(displayForgotPasswordAction(true));
+            dispatch(displayLoginAction(false));
           }} className={styles.link}>Mot de passe oublié?</p>
           <button className={styles.button}>SE CONNECTER</button>
         </div>

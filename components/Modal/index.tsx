@@ -1,14 +1,14 @@
-import { PropsWithChildren, ReactEventHandler, SyntheticEvent } from "react";
+import { PropsWithChildren, SyntheticEvent } from "react";
 import styles from "./Modal.module.css";
 import Image from "next/image";
+import { createPortal } from "react-dom";
 
 type Props = PropsWithChildren<{
   display: (d:boolean) => void;
 }>
 
 export default function Modal({children, display}:Props) {
-  return (
-    <div className={styles.container} data-testid="modal" onClick={() => display(false)}>
+  return (createPortal(<div className={styles.container} data-testid="modal" onClick={() => display(false)}>
         <div className={styles.mainDiv} data-testid='mainDiv' onClick={(e: SyntheticEvent) => e.stopPropagation()}>
             <Image 
               src="./images/exitLogo.svg"
@@ -20,6 +20,5 @@ export default function Modal({children, display}:Props) {
             />
             {children}
         </div>
-    </div>
-  )
+    </div>, document.body))
 }
