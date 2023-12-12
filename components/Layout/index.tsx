@@ -1,4 +1,4 @@
-import { toggleMode } from "@/lib/redux/features/modeSlice";
+import { toggleModeAction } from "@/lib/redux/features/modeSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { PropsWithChildren, useEffect } from "react"
 import Header from "../Header";
@@ -14,7 +14,7 @@ export default function Layout({children}:Props) {
     const localStorageDarkMode = localStorage.getItem('darkMode');
     if (localStorageDarkMode) {
       const darkModeStorage = JSON.parse(localStorageDarkMode);
-      darkModeDispatch(toggleMode(darkModeStorage));
+      darkModeDispatch(toggleModeAction(darkModeStorage));
     }
 
     // Modifying css variables
@@ -26,18 +26,9 @@ export default function Layout({children}:Props) {
       document.documentElement.style.setProperty("--textColor", "#000B00");
     }
   }, [darkMode, darkModeDispatch]);
-
-  const toDarkMode = () => {
-    darkModeDispatch(toggleMode(true));
-  }
-  const toLightMode = () => {
-    darkModeDispatch(toggleMode(false));
-  }
   return (
     <>
       <Header />
-      {/* <button onClick={toDarkMode}>darkMode</button>
-      <button onClick={toLightMode}>lightMode</button> */}
       {children}
     </>
   )

@@ -4,6 +4,7 @@ import modalReducer from './features/modalSlice';
 import loginReducer from './features/loginSlice';
 import registerReducer from './features/registerSlice';
 import forgotPasswordReducer from './features/forgotPasswordSlice';
+import parametersReducer from './features/parametersSlice';
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     login: loginReducer,
     register: registerReducer,
     forgotPasswprd: forgotPasswordReducer,
+    parameters: parametersReducer,
   },
 });
 

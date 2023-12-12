@@ -8,6 +8,7 @@ import { displayModalAction } from "@/lib/redux/features/modalSlice";
 import { displayLoginAction } from "@/lib/redux/features/loginSlice";
 import { displayRegisterAction } from "@/lib/redux/features/registerSlice";
 import { displayForgotPasswordAction } from "@/lib/redux/features/forgotPasswordSlice";
+import { displayParametersAction } from "@/lib/redux/features/parametersSlice";
 
 export default function Connexion() {
   const displayModal = useAppSelector(state => state.modal.display);
@@ -30,10 +31,12 @@ export default function Connexion() {
       <button className={styles.login} onClick={() => {
         dispatch(displayModalAction(true));
         dispatch(displayLoginAction(true));
+        dispatch(displayParametersAction(false));
       }}>CONNEXION</button>
       <button className={styles.register} onClick={() => {
         dispatch(displayModalAction(true));
         dispatch(displayRegisterAction(true));
+        dispatch(displayParametersAction(false));
       }}>INSCRIPTION</button>
     </div>
     {displayModal &&  <>

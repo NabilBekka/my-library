@@ -1,20 +1,21 @@
 import Image from "next/image";
 import styles from "./Header.module.css";
-import { useAppSelector } from "@/lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import Connexion from "../Connexion";
 import { useRouter } from "next/router";
+import Parameters from "../Parameters";
+import { displayParametersAction } from "@/lib/redux/features/parametersSlice";
 
 export default function Header() {
+  const displayParameters = useAppSelector(state => state.parameters.display);
   const darkMode = useAppSelector(state => state.mode.darkMode);
+  const dispatch = useAppDispatch();
   const router = useRouter();
 
   const toHomePage = ():void => {
     router.push("./");
   };
 
-  const displayParameters = ():void => {
-
-  }
   return (
     <header className={styles.header}>
       <h1 className={styles.title} onClick={toHomePage}>MY LIBRARY</h1>
@@ -26,9 +27,10 @@ export default function Header() {
           width={30}
           height={30}
           className={styles.parameters}
-          onClick={displayParameters}
+          onClick={() => dispatch(displayParametersAction(!displayParameters))}
         />
       </div>
+      { displayParameters && <Parameters /> }
     </header>
   )
 }

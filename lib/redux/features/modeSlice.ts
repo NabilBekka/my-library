@@ -8,7 +8,7 @@ const modeSlice = createSlice({
     name: 'mode',
     initialState,
     reducers: {
-        toggleMode: (state, action: PayloadAction<boolean>) => {
+        toggleModeAction: (state, action: PayloadAction<boolean>) => {
             state.darkMode = action.payload;
             localStorage.setItem('darkMode', `${action.payload}`)
         }
@@ -17,4 +17,4 @@ const modeSlice = createSlice({
 
 const modeReducer = modeSlice.reducer;
 export default modeReducer;
-export const { toggleMode } = modeSlice.actions;
+export const { toggleModeAction } = modeSlice.actions;
