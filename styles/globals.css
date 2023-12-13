@@ -27,3 +27,9 @@ main {
   background-color: var(--backgroundColor);
   margin-top: var(--headerHight);
 }
+
+@media (max-width: 450px) {
+  :root {
+    --headerHight: 40px;
+  }
+}

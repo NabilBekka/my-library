@@ -6,11 +6,10 @@
     left: 0;
     right: 0;
     bottom: 0;
-    padding: 50px;
+    padding: 15vh 50px;
     display: flex;
     flex-direction: row;
     justify-content: center;
-    padding-top: 25vh;
     z-index: 1000;
 }
 .mainDiv {
