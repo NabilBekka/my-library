@@ -21,13 +21,6 @@ describe('Test the Login component', () => {
         const link = getByText('Mot de passe oublié?');
         expect(link).toBeInTheDocument();
     });
-    // it('should call displayForgotPasswordHandler', () => {
-    //     const { getByText } = render(<Login displayLoginForm={displayLoginForm} displayForgotPasswordHandler={displayForgotPasswordHandler}/>);
-    //     const link = getByText('Mot de passe oublié?');
-    //     fireEvent.click(link);
-    //     expect(displayForgotPasswordHandler).toHaveBeenCalled();
-    //     expect(displayLoginForm).toHaveBeenCalled();
-    // });
     it('should renders the connect button', () => {
         const { getByRole } = render(<Login />);
         const button = getByRole('button');

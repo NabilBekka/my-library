@@ -3,6 +3,10 @@ import { Provider } from "react-redux";
 import store from "./store";
 
 jest.mock('next/router', () => jest.requireActual('next-router-mock'));
+const mockAuth = jest.fn();
+jest.mock('firebase/auth', () => ({
+  getAuth: mockAuth,
+}));
 
 const Wrapper = ({children}) => {
     return <Provider store={ store }>

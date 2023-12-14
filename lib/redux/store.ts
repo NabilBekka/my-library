@@ -5,6 +5,7 @@ import loginReducer from './features/loginSlice';
 import registerReducer from './features/registerSlice';
 import forgotPasswordReducer from './features/forgotPasswordSlice';
 import parametersReducer from './features/parametersSlice';
+import loadingReducer from './features/loadingSlice';
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     register: registerReducer,
     forgotPasswprd: forgotPasswordReducer,
     parameters: parametersReducer,
+    loading: loadingReducer,
   },
 });
 
