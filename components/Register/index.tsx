@@ -16,12 +16,13 @@ type InfoProfil = {
 }
 
 export default function Register() {
-  const [infoProfil, setInfoProfil] = useState<InfoProfil>({
+  const dataProfil: InfoProfil = {
     pseudo:'',
     email:'',
     password:'',
     confirmPassword:''
-  });
+  }
+  const [infoProfil, setInfoProfil] = useState<InfoProfil>(dataProfil);
   const { pseudo, email, password, confirmPassword } = infoProfil;
   const isSubmit = useAppSelector(state => state.loading.isSubmit);
   const isLoading = useAppSelector(state => state.loading.isLoading);
@@ -30,16 +31,16 @@ export default function Register() {
   const dispatch = useAppDispatch();
 
   const pseudoChange = (e:ChangeEvent<HTMLInputElement>): void => {
-    setInfoProfil( state => { return {...state, pseudo : e.target.value}})
+    setInfoProfil( state => ({...state, pseudo : e.target.value}))
   }
   const emailChange = (e:ChangeEvent<HTMLInputElement>): void => {
-    setInfoProfil( state => { return {...state, email : e.target.value}})
+    setInfoProfil( state => ({...state, email : e.target.value}))
   }
   const passwordChange = (e:ChangeEvent<HTMLInputElement>): void => {
-    setInfoProfil( state => { return {...state, password : e.target.value}})
+    setInfoProfil( state => ({...state, password : e.target.value}))
   }
   const confirmPasswordChange = (e:ChangeEvent<HTMLInputElement>): void => {
-    setInfoProfil( state => { return {...state, confirmPassword : e.target.value}})
+    setInfoProfil( state => ({...state, confirmPassword : e.target.value}))
   }
 
   const handleSubmit = (e:SyntheticEvent<HTMLFormElement>): void => {
@@ -52,18 +53,21 @@ export default function Register() {
         dispatch(isLoadingAction(false));
         setTimeout(() => {
           dispatch(displayModalAction(false));
-        },2000)
+        },2000);
       })
       .catch((error: Error) => {
         if (error.message === "Firebase: Error (auth/email-already-in-use)."){
           dispatch(errorAction("Adresse email déja utilisée!"));
         }else {
           dispatch(errorAction(error.message));
-        }
+        };
         dispatch(isLoadingAction(false));
         setTimeout(() => {
-          dispatch(displayModalAction(false));
-        },2000)
+          setInfoProfil(dataProfil);
+          dispatch(isSubmitAction(false));
+          dispatch(isLoadingAction(false));
+          dispatch(errorAction(null));
+        },3000);
       })
   };
 

@@ -25,5 +25,15 @@ describe('Test the Login component', () => {
         const { getByRole } = render(<Login />);
         const button = getByRole('button');
         expect(button.textContent).toBe('SE CONNECTER');
+        expect(button).toBeDisabled();
+    });
+    it('should renders the connect button', () => {
+        const { getByRole, getByPlaceholderText } = render(<Login />);
+        const button = getByRole('button');
+        const email = getByPlaceholderText('EMAIL');
+        const password = getByPlaceholderText('MOT DE PASSE');
+        fireEvent.change(email, { target: { value: 'john@gmail.com' }});
+        fireEvent.change(password, { target: { value: 'johnPassword' }});
+        expect(button).not.toBeDisabled();
     });
 });
