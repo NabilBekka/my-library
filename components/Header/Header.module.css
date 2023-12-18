@@ -6,6 +6,7 @@
     align-items: center;
     padding: 0 80px;
     height: var(--headerHight);
+    width: 100%;
     position: fixed;
     top: 0;
     left: 0;

@@ -24,10 +24,7 @@ export default function Register() {
   }
   const [infoProfil, setInfoProfil] = useState<InfoProfil>(dataProfil);
   const { pseudo, email, password, confirmPassword } = infoProfil;
-  const isSubmit = useAppSelector(state => state.loading.isSubmit);
-  const isLoading = useAppSelector(state => state.loading.isLoading);
-  const success = useAppSelector(state => state.loading.success);
-  const error = useAppSelector(state => state.loading.error);
+  const { isSubmit, isLoading, success, error } = useAppSelector(state => state.loading);
   const dispatch = useAppDispatch();
 
   const pseudoChange = (e:ChangeEvent<HTMLInputElement>): void => {
@@ -53,6 +50,7 @@ export default function Register() {
         dispatch(isLoadingAction(false));
         setTimeout(() => {
           dispatch(displayModalAction(false));
+          dispatch(displayRegisterAction(false));
         },2000);
       })
       .catch((error: Error) => {

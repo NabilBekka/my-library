@@ -7,6 +7,7 @@ import { errorAction, isLoadingAction, isSubmitAction, successAction } from "@/l
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase/firebase";
 import { displayModalAction } from "@/lib/redux/features/modalSlice";
+import { userConnectedAction } from "@/lib/redux/features/userSlice";
 
 type Profil = {
   email: string;
@@ -20,10 +21,7 @@ export default function Login() {
   } 
   const [profil, setProfil] = useState<Profil>(dataProfil);
   const { email, password } = profil;
-  const isSubmit = useAppSelector(state => state.loading.isSubmit);
-  const isLoading = useAppSelector(state => state.loading.isLoading);
-  const success = useAppSelector(state => state.loading.success);
-  const error = useAppSelector(state => state.loading.error);
+  const { isSubmit, isLoading, success, error } = useAppSelector(state => state.loading);
   const dispatch = useAppDispatch();
 
   useEffect(()=>{
@@ -49,9 +47,10 @@ export default function Login() {
       .then(() => {
         dispatch(successAction("Connexion avec succès!"));
         dispatch(isLoadingAction(false));
-        setTimeout(() => {
-          dispatch(displayModalAction(false));
-        },2000);
+        dispatch(userConnectedAction(true));
+        dispatch(isSubmitAction(false));
+        dispatch(displayModalAction(false));
+        dispatch(displayLoginAction(false));
       })
       .catch((error:Error) => {
         if (error.message === "Firebase: Error (auth/invalid-credential)."){

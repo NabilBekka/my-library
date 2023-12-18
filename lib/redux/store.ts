@@ -6,6 +6,8 @@ import registerReducer from './features/registerSlice';
 import forgotPasswordReducer from './features/forgotPasswordSlice';
 import parametersReducer from './features/parametersSlice';
 import loadingReducer from './features/loadingSlice';
+import userReducer from './features/userSlice';
+import signOutReducer from './features/signOutSlice';
 
 const store = configureStore({
   reducer: {
@@ -16,6 +18,8 @@ const store = configureStore({
     forgotPasswprd: forgotPasswordReducer,
     parameters: parametersReducer,
     loading: loadingReducer,
+    user: userReducer,
+    signOut: signOutReducer,
   },
 });
 

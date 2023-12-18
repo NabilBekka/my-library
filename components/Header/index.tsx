@@ -9,6 +9,7 @@ import { displayParametersAction } from "@/lib/redux/features/parametersSlice";
 export default function Header() {
   const displayParameters = useAppSelector(state => state.parameters.display);
   const darkMode = useAppSelector(state => state.mode.darkMode);
+  const userConnected = useAppSelector(state => state.user.userConnected);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -20,7 +21,7 @@ export default function Header() {
     <header className={styles.header}>
       <h1 className={styles.title} onClick={toHomePage}>MY LIBRARY</h1>
       <div className={styles.container}>
-        <Connexion />
+        { !userConnected && <Connexion /> }
         <Image 
           src={darkMode ? "./images/parametersWight.svg" : "./images/parametersDark.svg"}
           alt="Logo paramètres"
@@ -28,6 +29,11 @@ export default function Header() {
           height={30}
           className={styles.parameters}
           onClick={() => dispatch(displayParametersAction(!displayParameters))}
+          style={userConnected ? {
+            position: "absolute",
+            top: "10px",
+            right: "90px",
+        } : {}}
         />
       </div>
       { displayParameters && <Parameters /> }
