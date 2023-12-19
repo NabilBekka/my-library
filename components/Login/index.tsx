@@ -2,8 +2,8 @@ import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import styles from "../Connexion/Connexion.module.css";
 import { displayForgotPasswordAction } from "@/lib/redux/features/forgotPasswordSlice";
 import { displayLoginAction } from "@/lib/redux/features/loginSlice";
-import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
-import { errorAction, isLoadingAction, isSubmitAction, successAction } from "@/lib/redux/features/loadingSlice";
+import { ChangeEvent, SyntheticEvent, useState } from "react";
+import { errorAction, isLoadingAction, isSubmitAction } from "@/lib/redux/features/loadingSlice";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase/firebase";
 import { displayModalAction } from "@/lib/redux/features/modalSlice";
@@ -24,28 +24,16 @@ export default function Login() {
   const { isSubmit, isLoading, success, error } = useAppSelector(state => state.loading);
   const dispatch = useAppDispatch();
 
-  useEffect(()=>{
-    return () => {
-      dispatch(isSubmitAction(false));
-      dispatch(isLoadingAction(false));
-      dispatch(successAction(null));
-      dispatch(errorAction(null));
-    }
-  },[dispatch]);
-
-  const emailChange = (e:ChangeEvent<HTMLInputElement>): void => {
-    setProfil( state => ({...state, email : e.target.value}))
-  };
-  const passwordChange = (e:ChangeEvent<HTMLInputElement>): void => {
-    setProfil( state => ({...state, password : e.target.value}))
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    const { name, value } = e.target;
+    setProfil((state) => ({ ...state, [name]: value }));
   };
   const handleSubmit = (e:SyntheticEvent<HTMLFormElement>): void => {
     e.preventDefault();
     dispatch(isSubmitAction(true));
     dispatch(isLoadingAction(true));
     signInWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        dispatch(successAction("Connexion avec succès!"));
+      .then((userCredential) => {
         dispatch(isLoadingAction(false));
         dispatch(userConnectedAction(true));
         dispatch(isSubmitAction(false));
@@ -73,8 +61,8 @@ export default function Login() {
     <h3 className={styles.title}>CONNEXION</h3>
     {
       !isSubmit ? <form data-testid='login' className={styles.form} onSubmit={handleSubmit}>
-          <input type="email" placeholder="EMAIL" className={styles.input} required value={email} onChange={emailChange}/>
-          <input type="password" placeholder="MOT DE PASSE" className={styles.input} required value={password} onChange={passwordChange}/>
+          <input type="email" name="email" placeholder="EMAIL" className={styles.input} required value={email} onChange={handleInputChange}/>
+          <input type="password" name="password" placeholder="MOT DE PASSE" className={styles.input} required value={password} onChange={handleInputChange}/>
           <div className={styles.btnLinkContainer}>
             <p onClick={() => {
               dispatch(displayForgotPasswordAction(true));
@@ -82,7 +70,7 @@ export default function Login() {
             }} className={styles.link}>Mot de passe oublié?</p>
             <button className={styles.button} disabled={btnDisabled}>SE CONNECTER</button>
           </div>
-      </form> : isLoading ? <div>Chargement ...</div> : <div>{success ? success : error}</div>
+      </form> : isLoading ? <div>Chargement ...</div> : error ? <div>{error}</div> : null
     } 
   </>)
 }

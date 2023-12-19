@@ -27,13 +27,8 @@ export default function Header() {
           alt="Logo paramètres"
           width={30}
           height={30}
-          className={styles.parameters}
+          className={ userConnected? styles.parametersAfterUserConnected : styles.parameters}
           onClick={() => dispatch(displayParametersAction(!displayParameters))}
-          style={userConnected ? {
-            position: "absolute",
-            top: "10px",
-            right: "90px",
-        } : {}}
         />
       </div>
       { displayParameters && <Parameters /> }

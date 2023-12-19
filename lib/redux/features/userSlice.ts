@@ -1,7 +1,9 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    userConnected: false
+    userConnected: false,
+    uid: '',
+    name:''
 };
 
 const userSlice = createSlice({
@@ -10,10 +12,16 @@ const userSlice = createSlice({
     reducers: {
         userConnectedAction: (state, action: PayloadAction<boolean>) => {
             state.userConnected = action.payload;
-        } 
+        },
+        userUidAction: (state, action: PayloadAction<string>) => {
+            state.uid = action.payload;
+        },
+        userNameAction: (state, action: PayloadAction<string>) => {
+            state.uid = action.payload;
+        },
     }
 });
 
 const userReducer = userSlice.reducer;
 export default userReducer;
-export const { userConnectedAction } = userSlice.actions;
+export const { userConnectedAction, userUidAction, userNameAction } = userSlice.actions;

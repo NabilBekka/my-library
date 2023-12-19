@@ -4,7 +4,7 @@ import { displaySignOutAction } from "@/lib/redux/features/signOutSlice";
 import { displayModalAction } from "@/lib/redux/features/modalSlice";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase/firebase";
-import { userConnectedAction } from "@/lib/redux/features/userSlice";
+import { userConnectedAction, userUidAction } from "@/lib/redux/features/userSlice";
 import { isLoadingAction, isSubmitAction } from "@/lib/redux/features/loadingSlice";
 import { displayParametersAction } from "@/lib/redux/features/parametersSlice";
 
@@ -18,6 +18,7 @@ export default function SignOut() {
         signOut(auth)
         .then(() => {
             dispatch(userConnectedAction(false));
+            dispatch(userUidAction(''));
             dispatch(isSubmitAction(false));
             dispatch(isLoadingAction(false));
             dispatch(displaySignOutAction(false));

@@ -27,18 +27,10 @@ export default function Register() {
   const { isSubmit, isLoading, success, error } = useAppSelector(state => state.loading);
   const dispatch = useAppDispatch();
 
-  const pseudoChange = (e:ChangeEvent<HTMLInputElement>): void => {
-    setInfoProfil( state => ({...state, pseudo : e.target.value}))
-  }
-  const emailChange = (e:ChangeEvent<HTMLInputElement>): void => {
-    setInfoProfil( state => ({...state, email : e.target.value}))
-  }
-  const passwordChange = (e:ChangeEvent<HTMLInputElement>): void => {
-    setInfoProfil( state => ({...state, password : e.target.value}))
-  }
-  const confirmPasswordChange = (e:ChangeEvent<HTMLInputElement>): void => {
-    setInfoProfil( state => ({...state, confirmPassword : e.target.value}))
-  }
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    const { name, value } = e.target;
+    setInfoProfil((state) => ({ ...state, [name]: value }));
+  };
 
   const handleSubmit = (e:SyntheticEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -46,12 +38,8 @@ export default function Register() {
     dispatch(isLoadingAction(true));
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        dispatch(successAction("Inscription avec succès!"));
-        dispatch(isLoadingAction(false));
-        setTimeout(() => {
-          dispatch(displayModalAction(false));
-          dispatch(displayRegisterAction(false));
-        },2000);
+        dispatch(displayModalAction(false));
+        dispatch(displayRegisterAction(false));
       })
       .catch((error: Error) => {
         if (error.message === "Firebase: Error (auth/email-already-in-use)."){
@@ -73,7 +61,6 @@ export default function Register() {
     return () => {
       dispatch(isSubmitAction(false));
       dispatch(isLoadingAction(false));
-      dispatch(successAction(null));
       dispatch(errorAction(null));
     }
   },[dispatch]);
@@ -85,10 +72,10 @@ export default function Register() {
     {
       !isSubmit ? 
       <form data-testid='register' className={styles.form} onSubmit={handleSubmit}>
-        <input type="text" placeholder="PSEUDO" className={styles.input} value={pseudo} required onChange={pseudoChange}/>
-        <input type="email" placeholder="EMAIL" className={styles.input} value={email} required onChange={emailChange}/>
-        <input type="password" placeholder="MOT DE PASSE" className={styles.input} value={password} required onChange={passwordChange}/>
-        <input type="password" placeholder="CONFIRMER LE MOT DE PASSE" className={styles.input} value={confirmPassword} required onChange={confirmPasswordChange}/>
+        <input type="text" name="pseudo" placeholder="PSEUDO" className={styles.input} value={pseudo} required onChange={handleInputChange}/>
+        <input type="email" name="email" placeholder="EMAIL" className={styles.input} value={email} required onChange={handleInputChange}/>
+        <input type="password" name="password" placeholder="MOT DE PASSE" className={styles.input} value={password} required onChange={handleInputChange}/>
+        <input type="password" name="confirmPassword" placeholder="CONFIRMER LE MOT DE PASSE" className={styles.input} value={confirmPassword} required onChange={handleInputChange}/>
         <div className={styles.btnLinkContainer}>
           <p onClick={()=>{
             dispatch(displayLoginAction(true));

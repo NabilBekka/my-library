@@ -42,7 +42,12 @@
 .parameters {
     z-index: 300;
 }
-.parameters:hover, .parameters:focus {
+.parametersAfterUserConnected {
+    position: absolute;
+    top: 10px;
+    right: 90px;
+}
+.parameters:hover, .parameters:focus, .parametersAfterUserConnected:hover, .parametersAfterUserConnected:focus {
     cursor: pointer;
     transform: scale(1.1);
 }
@@ -97,7 +102,7 @@
     .container{
         width: 0;
     }
-    .parameters {
+    .parameters, .parametersAfterUserConnected {
         position: absolute;
         top: 10px;
         right: 10px;
@@ -110,7 +115,7 @@
     .title {
         font-size: 1.25rem;
     }
-    .parameters {
+    .parameters, .parametersAfterUserConnected {
         top: 5px;
         right: 5px;
         width: 25px;

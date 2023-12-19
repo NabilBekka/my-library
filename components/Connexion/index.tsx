@@ -9,6 +9,8 @@ import { displayLoginAction } from "@/lib/redux/features/loginSlice";
 import { displayRegisterAction } from "@/lib/redux/features/registerSlice";
 import { displayForgotPasswordAction } from "@/lib/redux/features/forgotPasswordSlice";
 import { displayParametersAction } from "@/lib/redux/features/parametersSlice";
+import { errorAction, isLoadingAction, isSubmitAction, successAction } from "@/lib/redux/features/loadingSlice";
+import { displaySignOutAction } from "@/lib/redux/features/signOutSlice";
 
 export default function Connexion() {
   const displayModal = useAppSelector(state => state.modal.display);
@@ -23,6 +25,11 @@ export default function Connexion() {
       dispatch(displayLoginAction(false));
       dispatch(displayRegisterAction(false));
       dispatch(displayForgotPasswordAction(false));
+      dispatch(displaySignOutAction(false));
+      dispatch(successAction(null));
+      dispatch(isSubmitAction(false));
+      dispatch(isLoadingAction(false));
+      dispatch(errorAction(null));
     }
   }
 
