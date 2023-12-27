@@ -4,7 +4,7 @@ import { PropsWithChildren, useEffect } from "react"
 import Header from "../Header";
 import { auth } from "@/lib/firebase/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { userConnectedAction, userUidAction } from "@/lib/redux/features/userSlice";
+import { userConnectedAction, userEmailAction, userUidAction } from "@/lib/redux/features/userSlice";
 
 type Props = PropsWithChildren<{}>
 
@@ -34,8 +34,7 @@ export default function Layout({children}:Props) {
       if(user){
         dispatch(userConnectedAction(true));
         dispatch(userUidAction(user.uid));
-      }else {
-        console.log("none")
+        user.email && dispatch(userEmailAction(user.email));
       }
     })
   }, [darkMode, dispatch]);

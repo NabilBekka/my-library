@@ -7,6 +7,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase/firebase";
 import { errorAction, isLoadingAction, isSubmitAction, successAction } from "@/lib/redux/features/loadingSlice";
 import { displayModalAction } from "@/lib/redux/features/modalSlice";
+import { useRouter } from "next/router";
 
 type InfoProfil = {
   pseudo: string;
@@ -23,9 +24,10 @@ export default function Register() {
     confirmPassword:''
   }
   const [infoProfil, setInfoProfil] = useState<InfoProfil>(dataProfil);
-  const { pseudo, email, password, confirmPassword } = infoProfil;
+  const { email, password, confirmPassword } = infoProfil;
   const { isSubmit, isLoading, success, error } = useAppSelector(state => state.loading);
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
@@ -40,6 +42,7 @@ export default function Register() {
       .then((userCredential) => {
         dispatch(displayModalAction(false));
         dispatch(displayRegisterAction(false));
+        router.push(`/updateProfil/${userCredential.user.uid}`);
       })
       .catch((error: Error) => {
         if (error.message === "Firebase: Error (auth/email-already-in-use)."){
@@ -72,7 +75,6 @@ export default function Register() {
     {
       !isSubmit ? 
       <form data-testid='register' className={styles.form} onSubmit={handleSubmit}>
-        <input type="text" name="pseudo" placeholder="PSEUDO" className={styles.input} value={pseudo} required onChange={handleInputChange}/>
         <input type="email" name="email" placeholder="EMAIL" className={styles.input} value={email} required onChange={handleInputChange}/>
         <input type="password" name="password" placeholder="MOT DE PASSE" className={styles.input} value={password} required onChange={handleInputChange}/>
         <input type="password" name="confirmPassword" placeholder="CONFIRMER LE MOT DE PASSE" className={styles.input} value={confirmPassword} required onChange={handleInputChange}/>

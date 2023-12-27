@@ -3,11 +3,6 @@ import '@testing-library/jest-dom';
 import Register from '.';
 
 describe('Test the Register component', () => {
-    it('should renders pseudo input', () => {
-        const { getByPlaceholderText } = render(<Register />);
-        const pseudo = getByPlaceholderText('PSEUDO');
-        expect(pseudo).toBeInTheDocument();
-    });
     it('should renders the email input', () => {
         const { getByPlaceholderText } = render(<Register />);
         const email = getByPlaceholderText('EMAIL');
@@ -31,11 +26,9 @@ describe('Test the Register component', () => {
     it('should check that the register button is not disabled', () => {
         const { getByRole, getByPlaceholderText } = render(<Register />);
         const registerBtn = getByRole('button');
-        const pseudo = getByPlaceholderText('PSEUDO');
         const email = getByPlaceholderText('EMAIL');
         const password = getByPlaceholderText('MOT DE PASSE');
         const confirmPassword = getByPlaceholderText('CONFIRMER LE MOT DE PASSE');
-        fireEvent.change(pseudo, { target: { value: "john" }});
         fireEvent.change(email, { target: { value: "john@gmail.com" }});
         fireEvent.change(password, { target: { value: "johnPassword" }});
         fireEvent.change(confirmPassword, { target: { value: "johnPassword" }});

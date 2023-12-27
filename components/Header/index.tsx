@@ -14,7 +14,7 @@ export default function Header() {
   const router = useRouter();
 
   const toHomePage = ():void => {
-    router.push("./");
+    router.push("/");
   };
 
   return (

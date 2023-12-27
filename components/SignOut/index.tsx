@@ -7,16 +7,19 @@ import { auth } from "@/lib/firebase/firebase";
 import { userConnectedAction, userUidAction } from "@/lib/redux/features/userSlice";
 import { isLoadingAction, isSubmitAction } from "@/lib/redux/features/loadingSlice";
 import { displayParametersAction } from "@/lib/redux/features/parametersSlice";
+import { useRouter } from "next/router";
 
 export default function SignOut() {
     const { isSubmit, isLoading } = useAppSelector(state => state.loading);
     const dispatch = useAppDispatch();
+    const router = useRouter();
 
     const confirmSignout = (): void => {
         dispatch(isSubmitAction(true));
         dispatch(isLoadingAction(true));
         signOut(auth)
         .then(() => {
+            router.push('/');
             dispatch(userConnectedAction(false));
             dispatch(userUidAction(''));
             dispatch(isSubmitAction(false));

@@ -3,7 +3,8 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 const initialState = {
     userConnected: false,
     uid: '',
-    name:''
+    name:'',
+    email:''
 };
 
 const userSlice = createSlice({
@@ -17,11 +18,14 @@ const userSlice = createSlice({
             state.uid = action.payload;
         },
         userNameAction: (state, action: PayloadAction<string>) => {
-            state.uid = action.payload;
+            state.name = action.payload;
+        },
+        userEmailAction: (state, action: PayloadAction<string>) => {
+            state.email = action.payload;
         },
     }
 });
 
 const userReducer = userSlice.reducer;
 export default userReducer;
-export const { userConnectedAction, userUidAction, userNameAction } = userSlice.actions;
+export const { userConnectedAction, userUidAction, userNameAction, userEmailAction } = userSlice.actions;

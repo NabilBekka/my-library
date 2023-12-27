@@ -1,0 +1,44 @@
+.main {
+    display: flex;
+    flex-direction: row;
+    padding: 0 30px;
+}
+.nav {
+    width: 20%;
+    padding-top: 50px;
+}
+.navDiv {
+    height: 50px;
+    text-transform: uppercase;
+    line-height: 50px;
+    padding-left: 15px;
+}
+.navDiv:hover, .navDiv:focus {
+    cursor: pointer;
+    background-color: #808080;
+    color: var(--textSecondColor);
+}
+.section {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.container {
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 5px 0;
+}
+.title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+.span {
+    font-weight: bold;
+}
+.modif:hover, .modif:focus {
+    cursor: pointer;
+    text-decoration: underline;
+}
