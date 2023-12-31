@@ -23,7 +23,7 @@ export default function Header() {
       <div className={styles.container}>
         { !userConnected && <Connexion /> }
         <Image 
-          src={darkMode ? "./images/parametersWight.svg" : "./images/parametersDark.svg"}
+          src={darkMode ? "/images/parametersWhite.svg" : "/images/parametersDark.svg"}
           alt="Logo paramètres"
           width={30}
           height={30}

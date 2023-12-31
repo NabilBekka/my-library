@@ -1,15 +1,15 @@
 import { auth } from "@/lib/firebase/firebase";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks"
-import { onAuthStateChanged, updatePassword } from "firebase/auth";
+import { deleteUser, onAuthStateChanged, updatePassword } from "firebase/auth";
 import { useRouter } from "next/router";
-import { ChangeEvent, SyntheticEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
 import styles from "@/styles/UpdateProfil.module.css";
 import stylesCnx from "@/components/Connexion/Connexion.module.css";
 import Modal from "@/components/Modal";
 import { errorAction, isLoadingAction, isSubmitAction, successAction } from "@/lib/redux/features/loadingSlice";
+import { userConnectedAction, userEmailAction, userUidAction } from "@/lib/redux/features/userSlice";
 
 export default function UpdateProfilUid() {
-    const [choice, setChoice] = useState(1);
     const [action, setAction] = useState('');
     const [password, setPassword] = useState('');
     const { name, email } = useAppSelector(state => state.user);
@@ -17,7 +17,6 @@ export default function UpdateProfilUid() {
     const { isSubmit, isLoading, success, error } = useAppSelector(state => state.loading);
     const router = useRouter();
     const dispatch = useAppDispatch();
-    // const passwordRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
@@ -40,13 +39,47 @@ export default function UpdateProfilUid() {
             .then(()=>{
                 dispatch(isLoadingAction(false));
                 dispatch(successAction("Mot de passe modifié avec succès!"));
+                setTimeout(()=>{
+                    closeModal(false);
+                },3000);
             })
             .catch((e:Error) => {
                 dispatch(isLoadingAction(false));
                 dispatch(errorAction(e.message));
+                setTimeout(()=>{
+                    dispatch(isSubmitAction(false));
+                    dispatch(successAction(null));
+                    dispatch(errorAction(null));
+                },5000);
             })
         }
         
+    }
+
+    const deleteUserHandler = ():void => {
+        submit();
+        if(auth.currentUser){
+            deleteUser(auth.currentUser)
+                .then(() => {
+                    dispatch(isLoadingAction(false));
+                    dispatch(successAction("Votre compte a bien été suprimer"));
+                    setTimeout(()=> {
+                        dispatch(userConnectedAction(false));
+                        dispatch(userUidAction(""));
+                        dispatch(userEmailAction(""));
+                        closeModal(false);
+                    },3000);
+                })
+                .catch((e:Error) => {
+                    dispatch(isLoadingAction(false));
+                    dispatch(errorAction(e.message));
+                    setTimeout(()=>{
+                        dispatch(isSubmitAction(false));
+                        dispatch(successAction(null));
+                        dispatch(errorAction(null));
+                    },5000);
+                })
+        }
     }
 
     const submit = (): void => {
@@ -71,60 +104,51 @@ export default function UpdateProfilUid() {
     }
 
     return (<main className={styles.main}>
-        <nav className={styles.nav}>
-            <div className={styles.navDiv} onClick={() => setChoice(1)}>Mes infos</div>
-            <div className={styles.navDiv} onClick={() => setChoice(2)}>Mon compte</div>
-        </nav>
-        <section className={styles.section}>
-            {
-                choice === 1 ? <>
-                    <h3 className={styles.title}>Mes infos</h3>
-                    <div className={styles.container}>
-                        <p><span className={styles.span}>Pseudo:</span> {name}</p>
-                        <p className={styles.modif} onClick={()=>actionHandler('pseudo')}>Modifier</p>
-                    </div>
-                    <div className={styles.container}>
-                        <p><span className={styles.span}>Email:</span> {email}</p>
-                    </div>
-                    <div className={styles.container}>
-                        <p><span className={styles.span}>Mot de passe:</span> ******</p>
-                        <p className={styles.modif} onClick={()=>actionHandler('password')}>Modifier</p>
-                    </div>               
-                </> : <>
-                    <h3 className={styles.title}>Mon compte</h3>
-                    <div className={styles.container}>
-                        <p className={styles.modif} onClick={()=>actionHandler('disable')}>Désactiver mon compte.</p>
-                    </div>
-                    <div className={styles.container}>
-                        <p className={styles.modif} onClick={()=>actionHandler('delete')}>Suprimer mon compte.</p>
-                    </div>
-                </>
-            }
-            {
-                displayModal && <Modal display={closeModal}>
-                    {
-                        !isSubmit ? <>{
-                            action === 'pseudo' ? <div>pseudo</div> : 
-                            action === 'password' ? <div>
-                                <h3 className={stylesCnx.title}>Entrez votre nouveau mot de passe</h3>
-                                <form className={stylesCnx.form} onSubmit={updatePasswordHandler}>
-                                    <input 
-                                        type="password" 
-                                        name="password" 
-                                        className={stylesCnx.input} 
-                                        value={password} 
-                                        onChange={(e:ChangeEvent<HTMLInputElement>)=>setPassword(e.target.value)}
-                                    />
-                                    <div className={stylesCnx.btnLinkContainer}>
-                                        <button className={stylesCnx.button} disabled={password.length<6}>VALIDER</button>
-                                    </div>
-                                </form>
-                            </div> : action === 'disable' ? <div>disable</div> :
-                            action === 'delete' ? <div>pseudo</div> : null
-                        }</> : isLoading ? <div>Chargement ...</div> : <div>{success ? success : error}</div>
-                    }
-                </Modal>
-            }
-        </section>
+        <h3 className={styles.title}>Mes infos</h3>
+        <div className={styles.container}>
+            <p><span className={styles.span}>Pseudo:</span> {name}</p>
+            <p className={styles.modif} onClick={()=>actionHandler('pseudo')}>Modifier</p>
+        </div>
+        <div className={styles.container}>
+            <p><span className={styles.span}>Email:</span> {email}</p>
+        </div>
+        <div className={styles.container}>
+            <p><span className={styles.span}>Mot de passe:</span> ******</p>
+            <p className={styles.modif} onClick={()=>actionHandler('password')}>Modifier</p>
+        </div>
+        <div className={styles.container}>
+            <p className={styles.modif} style={{fontWeight: "bold"}} onClick={()=>actionHandler('delete')}>Suprimer mon compte</p>
+        </div>
+        {
+            displayModal && <Modal display={closeModal}>
+                {
+                    !isSubmit ? <>{
+                        action === 'pseudo' ? <div>pseudo</div> : 
+                        action === 'password' ? <div>
+                            <h3 className={stylesCnx.title}>Entrez votre nouveau mot de passe</h3>
+                            <form className={stylesCnx.form} onSubmit={updatePasswordHandler}>
+                                <input 
+                                    type="password" 
+                                    name="password" 
+                                    className={stylesCnx.input} 
+                                    value={password} 
+                                    onChange={(e:ChangeEvent<HTMLInputElement>)=>setPassword(e.target.value)}
+                                />
+                                <div className={stylesCnx.btnLinkContainer}>
+                                    <button className={stylesCnx.button} disabled={password.length<6}>VALIDER</button>
+                                </div>
+                            </form>
+                        </div> : action === 'disable' ? <div>disable</div> :
+                        action === 'delete' ? <>
+                            <h3 className={stylesCnx.title}>Êtes-vous sûr de vouloir supprimer votre compte?</h3>
+                            <div className={stylesCnx.toggleMode} data-testid='toggleMode'>
+                                <button className={stylesCnx.button} onClick={deleteUserHandler}>OUI</button>
+                                <button className={stylesCnx.button} onClick={() => closeModal(false)}>NON</button>
+                            </div>
+                        </> : null
+                    }</> : isLoading ? <div>Chargement ...</div> : <div>{success ? success : error}</div>
+                }
+            </Modal>
+        }
     </main>)
 }

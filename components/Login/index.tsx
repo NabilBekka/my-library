@@ -8,6 +8,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/lib/firebase/firebase";
 import { displayModalAction } from "@/lib/redux/features/modalSlice";
 import { userConnectedAction } from "@/lib/redux/features/userSlice";
+import { useRouter } from "next/router";
 
 type Profil = {
   email: string;
@@ -21,8 +22,9 @@ export default function Login() {
   } 
   const [profil, setProfil] = useState<Profil>(dataProfil);
   const { email, password } = profil;
-  const { isSubmit, isLoading, success, error } = useAppSelector(state => state.loading);
+  const { isSubmit, isLoading, error } = useAppSelector(state => state.loading);
   const dispatch = useAppDispatch();
+  const router = useRouter();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
@@ -39,6 +41,7 @@ export default function Login() {
         dispatch(isSubmitAction(false));
         dispatch(displayModalAction(false));
         dispatch(displayLoginAction(false));
+        router.push('/');
       })
       .catch((error:Error) => {
         if (error.message === "Firebase: Error (auth/invalid-credential)."){

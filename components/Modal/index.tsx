@@ -11,7 +11,7 @@ export default function Modal({children, display}:Props) {
   return (createPortal(<div className={styles.container} data-testid="modal" onClick={() => display(false)}>
         <div className={styles.mainDiv} data-testid='mainDiv' onClick={(e: SyntheticEvent) => e.stopPropagation()}>
             <Image 
-              src="./images/exitLogo.svg"
+              src="/images/exitLogo.svg"
               alt="Fermer"
               width={30}
               height={30}
