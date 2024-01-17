@@ -18,6 +18,9 @@
 .span {
     font-weight: bold;
 }
+.modif {
+    color: #0050ff;
+}
 .modif:hover, .modif:focus {
     cursor: pointer;
     text-decoration: underline;

@@ -4,7 +4,7 @@ import { displaySignOutAction } from "@/lib/redux/features/signOutSlice";
 import { displayModalAction } from "@/lib/redux/features/modalSlice";
 import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase/firebase";
-import { userConnectedAction, userUidAction } from "@/lib/redux/features/userSlice";
+import { userConnectedAction, userEmailAction, userNameAction, userUidAction } from "@/lib/redux/features/userSlice";
 import { isLoadingAction, isSubmitAction } from "@/lib/redux/features/loadingSlice";
 import { displayParametersAction } from "@/lib/redux/features/parametersSlice";
 import { useRouter } from "next/router";
@@ -26,6 +26,8 @@ export default function SignOut() {
             dispatch(isLoadingAction(false));
             dispatch(displaySignOutAction(false));
             dispatch(displayModalAction(false));
+            dispatch(userNameAction(''));
+            dispatch(userEmailAction(''));
         })
         .catch(() => {
             dispatch(isLoadingAction(false));

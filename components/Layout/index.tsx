@@ -2,9 +2,10 @@ import { toggleModeAction } from "@/lib/redux/features/modeSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { PropsWithChildren, useEffect } from "react"
 import Header from "../Header";
-import { auth } from "@/lib/firebase/firebase";
+import { auth, user } from "@/lib/firebase/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { userConnectedAction, userEmailAction, userUidAction } from "@/lib/redux/features/userSlice";
+import { userConnectedAction, userEmailAction, userNameAction, userUidAction } from "@/lib/redux/features/userSlice";
+import { getDoc } from "firebase/firestore";
 
 type Props = PropsWithChildren<{}>
 
@@ -30,13 +31,22 @@ export default function Layout({children}:Props) {
     }
 
     //Get user information
-    onAuthStateChanged(auth, (user) => {
-      if(user){
+    onAuthStateChanged(auth, (userCredential) => {
+      if(userCredential){
         dispatch(userConnectedAction(true));
-        dispatch(userUidAction(user.uid));
-        user.email && dispatch(userEmailAction(user.email));
+        dispatch(userUidAction(userCredential.uid));
+        userCredential.email && dispatch(userEmailAction(userCredential.email));
+        getDoc(user(userCredential.uid))
+          .then((datas)=> {
+            if (datas.exists()){
+              dispatch(userNameAction(datas.data().pseudo));
+            }
+          })
+          .catch(()=> {
+            dispatch(userNameAction("Nous avons une erreur!"));
+          })
       }
-    })
+    });
   }, [darkMode, dispatch]);
   return (
     <>

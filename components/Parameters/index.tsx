@@ -30,8 +30,13 @@ export default function Parameters() {
         router.push("/updateProfil")
         dispatch(displayParametersAction(false));
     };
+    const toHomePage = (): void => {
+        router.push("/");
+        dispatch(displayParametersAction(false));
+    };
     return (
         createPortal(<div className={styles.parametersContainer} data-testid="parametersContainer">
+            <div className={styles.darkMode} onClick={toHomePage}>ACCUEIL</div>
             {
                 userConnected && <div className={styles.darkMode} onClick={toUpdateProfil}>ÉDITER MON PROFIL</div>
             }

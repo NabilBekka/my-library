@@ -1,10 +1,10 @@
 import Head from 'next/head';
 import styles from '@/styles/Home.module.css';
 import { useAppSelector } from '@/lib/redux/hooks';
-import Modal from '@/components/Modal';
 
 export default function Home() {
   const mode = useAppSelector(state => state.mode.darkMode);
+  const { name } = useAppSelector(state => state.user);
   return (
     <>
       <Head>
@@ -14,7 +14,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-          hello
+          <h1>Bonjour {name}</h1>
       </main>
     </>
   )

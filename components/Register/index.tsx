@@ -4,10 +4,12 @@ import { displayLoginAction } from "@/lib/redux/features/loginSlice";
 import { displayRegisterAction } from "@/lib/redux/features/registerSlice";
 import { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/firebase/firebase";
+import { auth, user } from "@/lib/firebase/firebase";
 import { errorAction, isLoadingAction, isSubmitAction, successAction } from "@/lib/redux/features/loadingSlice";
 import { displayModalAction } from "@/lib/redux/features/modalSlice";
 import { useRouter } from "next/router";
+import { setDoc } from "firebase/firestore";
+import { userNameAction } from "@/lib/redux/features/userSlice";
 
 type InfoProfil = {
   pseudo: string;
@@ -24,7 +26,7 @@ export default function Register() {
     confirmPassword:''
   }
   const [infoProfil, setInfoProfil] = useState<InfoProfil>(dataProfil);
-  const { email, password, confirmPassword } = infoProfil;
+  const { pseudo, email, password, confirmPassword } = infoProfil;
   const { isSubmit, isLoading, success, error } = useAppSelector(state => state.loading);
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -39,10 +41,14 @@ export default function Register() {
     dispatch(isSubmitAction(true));
     dispatch(isLoadingAction(true));
     createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(userCredential => setDoc(user(userCredential.user.uid), {
+          pseudo,
+          email
+        }))
+      .then(() => {
         dispatch(displayModalAction(false));
         dispatch(displayRegisterAction(false));
-        router.push(`/updateProfil/${userCredential.user.uid}`);
+        router.push(`/`);
       })
       .catch((error: Error) => {
         if (error.message === "Firebase: Error (auth/email-already-in-use)."){
@@ -68,13 +74,14 @@ export default function Register() {
     }
   },[dispatch]);
 
-  const btnDisabled: boolean = password.length<6 || password!=confirmPassword || !email.includes('@') || !email.includes('.')
+  const btnDisabled: boolean = password.length<6 || password!=confirmPassword || !email.includes('@') || !email.includes('.') || pseudo.length === 0
   
   return (<>
     <h3 className={styles.title}>INSCRIPTION</h3>
     {
       !isSubmit ? 
       <form data-testid='register' className={styles.form} onSubmit={handleSubmit}>
+        <input type="text" name="pseudo" placeholder="PSEUDO" className={styles.input} value={pseudo} required onChange={handleInputChange}/>
         <input type="email" name="email" placeholder="EMAIL" className={styles.input} value={email} required onChange={handleInputChange}/>
         <input type="password" name="password" placeholder="MOT DE PASSE" className={styles.input} value={password} required onChange={handleInputChange}/>
         <input type="password" name="confirmPassword" placeholder="CONFIRMER LE MOT DE PASSE" className={styles.input} value={confirmPassword} required onChange={handleInputChange}/>
